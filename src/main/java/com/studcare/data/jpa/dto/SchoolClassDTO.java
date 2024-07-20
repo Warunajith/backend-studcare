@@ -9,7 +9,4 @@ import java.util.List;
 public class SchoolClassDTO {
 	private String className;
 	private UserDTO classTeacher;
-	private List<StudentDTO> students;
-
-
 }

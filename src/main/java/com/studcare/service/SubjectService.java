@@ -65,10 +65,12 @@ public class SubjectService {
 			log.info("SubjectService.createSubject() finished successfully");
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.createSubject() a validation error occurred", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.createSubject() an error occurred", exception);
 		}
@@ -79,16 +81,13 @@ public class SubjectService {
 		if (subjectRepository.existsBySubjectName(createSubjectRequestDTO.getSubjectName())) {
 			throw new StudCareValidationException("Subject already exists");
 		}
-
 		Subject subject = new Subject();
 		subject.setSubjectName(createSubjectRequestDTO.getSubjectName());
-
 		try {
 			subjectRepository.save(subject);
 		} catch (Exception e) {
 			throw new StudCareDataException("Failed to save new subject");
 		}
-
 		ResponseDTO responseDTO = new ResponseDTO();
 		responseDTO.setResponseCode(Status.SUCCESS);
 		responseDTO.setMessage("Subject created successfully");
@@ -107,10 +106,12 @@ public class SubjectService {
 			log.info("SubjectService.addTeacher() finished successfully");
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.addTeacher() a validation error occurred", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.addTeacher() an error occurred", exception);
 		}
@@ -118,20 +119,16 @@ public class SubjectService {
 	}
 
 	private ResponseDTO addTeacherToSubject(AddTeacherToSubjectRequestDTO addTeacherToSubjectRequestDTO) {
-		Subject subject = subjectRepository.findById(addTeacherToSubjectRequestDTO.getSubjectId())
+		Subject subject = subjectRepository.findBySubjectName(addTeacherToSubjectRequestDTO.getSubject())
 				.orElseThrow(() -> new StudCareValidationException("Subject not found"));
-
-		User teacher = userRepository.findById(addTeacherToSubjectRequestDTO.getTeacherId())
+		User teacher = userRepository.findByEmail(addTeacherToSubjectRequestDTO.getTeacher())
 				.orElseThrow(() -> new StudCareValidationException("Teacher not found"));
-
 		if (!teacher.getRole().equals(UserRole.TEACHER)) {
 			throw new StudCareValidationException("User is not a teacher");
 		}
-
 		if (subjectTeacherRepository.existsBySubjectAndTeacher(subject, teacher)) {
 			throw new StudCareValidationException("Teacher is already assigned to this subject");
 		}
-
 		SubjectTeacher subjectTeacher = new SubjectTeacher();
 		SubjectTeacher.SubjectTeacherKey key = new SubjectTeacher.SubjectTeacherKey();
 		key.setSubjectID(subject.getSubjectID());
@@ -139,13 +136,11 @@ public class SubjectService {
 		subjectTeacher.setId(key);
 		subjectTeacher.setSubject(subject);
 		subjectTeacher.setTeacher(teacher);
-
 		try {
 			subjectTeacherRepository.save(subjectTeacher);
 		} catch (Exception e) {
 			throw new StudCareDataException("Failed to assign teacher to subject");
 		}
-
 		ResponseDTO responseDTO = new ResponseDTO();
 		responseDTO.setResponseCode(Status.SUCCESS);
 		responseDTO.setMessage("Teacher assigned to subject successfully");
@@ -168,18 +163,19 @@ public class SubjectService {
 			log.info("SubjectService.getAllSubjects() finished successfully");
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.getAllSubjects() an error occurred", exception);
 		}
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> getSubjectsForTeacher(Long teacherId) {
+	public ResponseEntity<Object> getSubjectsForTeacher(String teacherEmail) {
 		log.info("SubjectService.getSubjectsForTeacher() initiated");
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 		try {
-			User teacher = userRepository.findById(teacherId)
+			User teacher = userRepository.findByEmail(teacherEmail)
 					.orElseThrow(() -> new StudCareValidationException("Teacher not found"));
 			List<Subject> subjects = subjectTeacherRepository.findByTeacher(teacher)
 					.stream()
@@ -194,22 +190,24 @@ public class SubjectService {
 			log.info("SubjectService.getSubjectsForTeacher() finished successfully");
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.getSubjectsForTeacher() a validation error occurred", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.getSubjectsForTeacher() an error occurred", exception);
 		}
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> getTeachersForSubject(Long subjectId) {
+	public ResponseEntity<Object> getTeachersForSubject(String subjectName) {
 		log.info("SubjectService.getTeachersForSubject() initiated");
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 		try {
-			Subject subject = subjectRepository.findById(subjectId)
+			Subject subject = subjectRepository.findBySubjectName(subjectName)
 					.orElseThrow(() -> new StudCareValidationException("Subject not found"));
 			List<User> teachers = subjectTeacherRepository.findBySubject(subject)
 					.stream()
@@ -224,10 +222,12 @@ public class SubjectService {
 			log.info("SubjectService.getTeachersForSubject() finished successfully");
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.getTeachersForSubject() a validation error occurred", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("SubjectService.getTeachersForSubject() an error occurred", exception);
 		}

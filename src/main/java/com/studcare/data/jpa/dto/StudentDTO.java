@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class StudentDTO {
+	private Long studentId;
 	private SchoolClassDTO schoolClassDTO;
 	private WardDTO wardDTO;
 	private UserDTO userDTO;

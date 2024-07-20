@@ -1,5 +1,6 @@
 package com.studcare.data.jpa.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,16 +37,13 @@ public class SchoolClass {
 	@JoinColumn(name = "ClassTeacherID", unique = true)
 	private User classTeacher;
 
-	@OneToMany(mappedBy = "schoolClass")
-	private List<Student> students;
-
 	@ManyToMany
 	@JoinTable(
 			name = "CLASS_SUBJECT",
 			joinColumns = @JoinColumn(name = "ClassID"),
 			inverseJoinColumns = @JoinColumn(name = "SubjectID")
 	)
-	private Set<Subject> subjects;
+	private List<Subject> subjects;
 
 	@CreationTimestamp
 	private LocalDateTime createdTimestamp;

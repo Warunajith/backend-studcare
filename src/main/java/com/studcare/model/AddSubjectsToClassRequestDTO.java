@@ -8,6 +8,6 @@ import java.util.Map;
 
 @Data
 public class AddSubjectsToClassRequestDTO {
-	private List<SubjectTeacherDTO> subjectTeachers;
+	private SubjectsDTO subjects;
 	private String className;
 }

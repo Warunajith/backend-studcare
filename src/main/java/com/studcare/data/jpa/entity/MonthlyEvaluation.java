@@ -48,8 +48,8 @@ public class MonthlyEvaluation {
 	private String healthData;
 
 	@ManyToOne
-	@JoinColumn(name = "HostelMasterID")
-	private HostelMaster hostelMasterId;
+	@JoinColumn(name = "UserID")
+	private User hostelMasterId;
 
 	@CreationTimestamp
 	private LocalDateTime createdTimestamp;

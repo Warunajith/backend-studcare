@@ -1,6 +1,5 @@
 package com.studcare.data.jpa.repository;
 
-import com.studcare.data.jpa.entity.HostelMaster;
 import com.studcare.data.jpa.entity.Subject;
 import com.studcare.data.jpa.entity.SubjectResult;
 import com.studcare.data.jpa.entity.TermResult;

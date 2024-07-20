@@ -11,8 +11,8 @@ public class HttpRequestData {
 	private Map<String, String> queryParams;
 	private String requestBody;
 
-	public HttpRequestData(String userId, Map<String, String> headers, Map<String, String> queryParams, String requestBody) {
-		this.reference = userId;
+	public HttpRequestData(String reference, Map<String, String> headers, Map<String, String> queryParams, String requestBody) {
+		this.reference = reference;
 		this.headers = headers;
 		this.queryParams = queryParams;
 		this.requestBody = requestBody;

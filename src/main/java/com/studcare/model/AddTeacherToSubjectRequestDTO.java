@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AddTeacherToSubjectRequestDTO {
-	private Long subjectId;
-	private Long teacherId;
+	private String subject;
+	private String teacher;
 }

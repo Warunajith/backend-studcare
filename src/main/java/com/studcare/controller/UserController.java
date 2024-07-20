@@ -1,5 +1,6 @@
 package com.studcare.controller;
 
+import com.studcare.data.jpa.service.UserService;
 import com.studcare.model.HttpRequestData;
 import com.studcare.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class UserController {
 	@Autowired
 	private AccountService accountService;
+	@Autowired
+	private UserService userService;
 	@PostMapping("/logout/{email}")
 	public ResponseEntity<Object> logoutUser(
 			@PathVariable String email,
@@ -51,6 +54,22 @@ public class UserController {
 			return accountService.viewUserProfile(httpRequestData);
 		} catch (Exception exception) {
 			log.error("AccountController.viewUserProfile()[GET] unexpected error occurred", exception);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/all")
+	public ResponseEntity<Object> getAllUsersByRole(
+			@RequestHeader Map<String, String> headers,
+			@RequestParam Map<String, String> queryParams,
+			@RequestBody String requestBody
+	) {
+		try {
+			log.info("AccountController.getAllUsersByRole()[GET] process initiated");
+			HttpRequestData httpRequestData = new HttpRequestData( headers, queryParams, requestBody);
+			return userService.getAllUsersByRole(httpRequestData);
+		} catch (Exception exception) {
+			log.error("AccountController.getAllUsersByRole()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class HostelMasterDTO {
-	private UserDTO userDTO;
+
 
 }

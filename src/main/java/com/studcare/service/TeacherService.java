@@ -67,28 +67,23 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 
 	@Autowired private TermResultRepository termResultRepository;
 
-	public ResponseEntity<Object> getTeacherSubjectsAndClasses(Long teacherId) {
-		log.info("ClassService.getTeacherSubjectsAndClasses() initiated for teacher ID: {}", teacherId);
+	public ResponseEntity<Object> getTeacherSubjectsAndClasses(String teacherEmail) {
+		log.info("ClassService.getTeacherSubjectsAndClasses() initiated for teacher ID: {}", teacherEmail);
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 
 		try {
-			User teacher = userRepository.findById(teacherId).orElseThrow(() -> new StudCareValidationException("Teacher not found"));
-
+			User teacher = userRepository.findByEmail(teacherEmail).orElseThrow(() -> new StudCareValidationException("Teacher not found"));
 			List<ClassSubjectAssignment> assignments = classSubjectAssignmentRepository.findByTeacher(teacher);
-
 			Map<Subject, List<SchoolClass>> subjectClassesMap = assignments.stream().collect(
 					Collectors.groupingBy(ClassSubjectAssignment::getSubject, Collectors.mapping(ClassSubjectAssignment::getSchoolClass, Collectors.toList())));
-
 			List<SubjectClassesDTO> subjectClassesList = subjectClassesMap.entrySet().stream()
 					.map(entry -> new SubjectClassesDTO(subjectAdapter.adapt(entry.getKey()),
 							entry.getValue().stream().map(schoolClassAdapter::adapt).collect(Collectors.toList()))).collect(Collectors.toList());
-
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setResponseCode(Status.SUCCESS);
 			responseDTO.setMessage("Teacher subjects and classes retrieved successfully");
 			responseDTO.setData(subjectClassesList);
-
 			httpResponseData = responseAdapter.adapt(responseDTO);
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (StudCareValidationException exception) {
@@ -104,18 +99,18 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> getClassTeacherDetails(Long userId) {
-		log.info("ClassService.getClassTeacherDetails() initiated for user ID: {}", userId);
+	public ResponseEntity<Object> getClassTeacherDetails(String teacher) {
+		log.info("ClassService.getClassTeacherDetails() initiated for user ID: {}", teacher);
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 
 		try {
-			User user = userRepository.findById(userId).orElseThrow(() -> new StudCareValidationException("User not found"));
+			User user = userRepository.findByEmail(teacher).orElseThrow(() -> new StudCareValidationException("User not found"));
 
 			if (Boolean.TRUE.equals(user.getIsClassTeacher())) {
 				SchoolClass schoolClass = schoolClassRepository.findByClassTeacher(user)
 						.orElseThrow(() -> new StudCareValidationException("Class not found for this class teacher"));
-				return classService.getClassDetails(schoolClass.getClassID());
+				return classService.getClassDetails(schoolClass.getClassName());
 			} else {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setResponseCode(Status.FAILURE);
@@ -136,13 +131,13 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> addSubjectResults(SubjectResultsRequestDTO resultsRequestDTO, Long teacherId) {
+	public ResponseEntity<Object> addSubjectResults(SubjectResultsRequestDTO resultsRequestDTO, String teacherEmail) {
 		log.info("ClassService.addSubjectResults() initiated for subject ID: {}", resultsRequestDTO.getSubjectId());
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 
 		try {
-			User teacher = userRepository.findById(teacherId).orElseThrow(() -> new StudCareValidationException("Teacher not found"));
+			User teacher = userRepository.findByEmail(teacherEmail).orElseThrow(() -> new StudCareValidationException("Teacher not found"));
 
 			Subject subject = subjectRepository.findById(resultsRequestDTO.getSubjectId())
 					.orElseThrow(() -> new StudCareValidationException("Subject not found"));

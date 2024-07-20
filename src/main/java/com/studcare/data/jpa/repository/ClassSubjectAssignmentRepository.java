@@ -26,7 +26,7 @@ public interface ClassSubjectAssignmentRepository extends JpaRepository<ClassSub
 
 	List<ClassSubjectAssignment> findBySchoolClassAndTeacher(SchoolClass schoolClass, User teacher);
 
-	List<ClassSubjectAssignment> findByTeacherAndSubject(User teacher, Subject subject);
+	Optional<List<ClassSubjectAssignment>> findByTeacherAndSubject(User teacher, Subject subject);
 	boolean existsByTeacherAndSubject(User teacher, Subject subject);
 
 }

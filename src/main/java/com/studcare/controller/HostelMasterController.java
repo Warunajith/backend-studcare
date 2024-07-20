@@ -17,7 +17,7 @@ public class HostelMasterController {
 	private HostelMasterService hostelMasterService;
 
 	@GetMapping("/{hostelMasterId}/ward")
-	public ResponseEntity<Object> getWardDetails(@PathVariable Long hostelMasterId) {
+	public ResponseEntity<Object> getWardDetails(@PathVariable String hostelMasterId) {
 		try {
 			log.info("HostelMasterController.getWardDetails()[GET] process initiated for hostel master ID: {}", hostelMasterId);
 			return hostelMasterService.getWardDetails(hostelMasterId);
@@ -27,21 +27,10 @@ public class HostelMasterController {
 		}
 	}
 
-	@GetMapping("/all")
-	public ResponseEntity<Object> getAllHostelMasters() {
-		try {
-			log.info("HostelMasterController.getAllHostelMasters()[GET] process initiated");
-			return hostelMasterService.getAllHostelMasters();
-		} catch (Exception exception) {
-			log.error("HostelMasterController.getAllHostelMasters()[GET] unexpected error occurred", exception);
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
 	@PostMapping("/{hostelMasterId}/student/{studentId}/evaluation")
 	public ResponseEntity<Object> addMonthlyEvaluation(
-			@PathVariable Long hostelMasterId,
-			@PathVariable Long studentId,
+			@PathVariable String hostelMasterId,
+			@PathVariable String studentId,
 			@RequestBody MonthlyEvaluationRequestDTO evaluationRequestDTO) {
 		try {
 			log.info("HostelMasterController.addMonthlyEvaluation()[POST] process initiated for hostel master ID: {} and student ID: {}", hostelMasterId, studentId);

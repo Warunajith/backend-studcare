@@ -33,38 +33,38 @@ public class WardController {
 		}
 	}
 
-	@PostMapping("/{wardId}/add/students")
+	@PostMapping("/{wardName}/add/students")
 	public ResponseEntity<Object> addStudents(
-			@PathVariable Long wardId,
+			@PathVariable String wardName,
 			@RequestHeader Map<String, String> headers,
 			@RequestParam Map<String, String> queryParams,
 			@RequestBody String requestBody) {
 		try {
-			log.info("WardController.addStudents()[POST] process initiated for ward ID: {}", wardId);
-			HttpRequestData httpRequestData = new HttpRequestData(headers, queryParams, requestBody);
-			return wardService.addStudents(wardId, httpRequestData);
+			log.info("WardController.addStudents()[POST] process initiated for ward ID: {}", wardName);
+			HttpRequestData httpRequestData = new HttpRequestData(wardName, headers, queryParams, requestBody);
+			return wardService.addStudents(wardName, httpRequestData);
 		} catch (Exception exception) {
 			log.error("WardController.addStudents()[POST] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/{wardId}/students")
-	public ResponseEntity<Object> getStudentsInWard(@PathVariable Long wardId) {
+	@GetMapping("/{wardName}/students")
+	public ResponseEntity<Object> getStudentsInWard(@PathVariable String wardName) {
 		try {
-			log.info("WardController.getStudentsInWard()[GET] process initiated for ward ID: {}", wardId);
-			return wardService.getStudentsInWard(wardId);
+			log.info("WardController.getStudentsInWard()[GET] process initiated for ward ID: {}", wardName);
+			return wardService.getStudentsInWard(wardName);
 		} catch (Exception exception) {
 			log.error("WardController.getStudentsInWard()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/{wardId}/details")
-	public ResponseEntity<Object> getWardDetails(@PathVariable Long wardId) {
+	@GetMapping("/{wardName}/details")
+	public ResponseEntity<Object> getWardDetails(@PathVariable String wardName) {
 		try {
-			log.info("WardController.getWardDetails()[GET] process initiated for ward ID: {}", wardId);
-			return wardService.getWardDetails(wardId);
+			log.info("WardController.getWardDetails()[GET] process initiated for ward ID: {}", wardName);
+			return wardService.getWardDetails(wardName);
 		} catch (Exception exception) {
 			log.error("WardController.getWardDetails()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

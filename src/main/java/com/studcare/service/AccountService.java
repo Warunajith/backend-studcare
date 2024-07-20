@@ -68,7 +68,7 @@ public class AccountService {
 	private UserService userService;
 
 	public ResponseEntity<Object> createUser(HttpRequestData httpRequestData) {
-		log.info("AccountService.createUser() initiated");
+		log.info("AccountService.adaptCreateUser() initiated");
 		ResponseEntity<Object> responseEntity;
 		UserRegisterResponseDTO userRegisterResponseDTO;
 		HttpResponseData httpResponseData = new HttpResponseData();
@@ -78,19 +78,22 @@ public class AccountService {
 			userRegisterResponseDTO =userService.register(userRegisterRequestDTO.getUserDTO());
 			httpResponseData = userRegisterResponseAdapter.adapt(userRegisterResponseDTO);
 			responseEntity = createResponseEntity(httpResponseData);
-			log.info("AccountService.createUser()  finished for {}", userRegisterRequestDTO.getUserDTO().getEmail());
+			log.info("AccountService.adaptCreateUser()  finished for {}", userRegisterRequestDTO.getUserDTO().getEmail());
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
-			log.error("AccountService.createUser()  an validation error occurred while processing the request", exception);
+			log.error("AccountService.adaptCreateUser()  an validation error occurred while processing the request", exception);
 		} catch (StudCareRuntimeException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
-			log.error("AccountService.createUser()  an runtime error occurred while processing the request", exception);
+			log.error("AccountService.adaptCreateUser()  an runtime error occurred while processing the request", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
-			log.error("AccountService.createUser()  an error occurred while processing the request", exception);
+			log.error("AccountService.adaptCreateUser()  an error occurred while processing the request", exception);
 		}
 		return responseEntity;
 	}
@@ -109,14 +112,17 @@ public class AccountService {
 			log.info("AccountService.deleteUser() finished for {}", userDeletionRequestDTO.getUserEmail());
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.deleteUser() an validation error occurred while processing the request", exception);
 		} catch (StudCareRuntimeException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.deleteUser() an runtime error occurred while processing the request", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.deleteUser() an error occurred while processing the request", exception);
 		}
@@ -137,14 +143,17 @@ public class AccountService {
 			log.info("AccountService.viewUserProfile() finished for {}", userProfileRequestDTO.getUserEmail());
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.viewUserProfile() an validation error occurred while processing the request", exception);
 		} catch (StudCareRuntimeException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.viewUserProfile() an runtime error occurred while processing the request", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.viewUserProfile() an error occurred while processing the request", exception);
 		}
@@ -165,14 +174,17 @@ public class AccountService {
 			log.info("AccountService.userLogout() finished for {}", logoutRequestDTO.getEmail());
 		} catch (StudCareValidationException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.userLogout() an validation error occurred while processing the request", exception);
 		} catch (StudCareRuntimeException exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.userLogout() an runtime error occurred while processing the request", exception);
 		} catch (Exception exception) {
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 			log.error("AccountService.userLogout() an error occurred while processing the request", exception);
 		}

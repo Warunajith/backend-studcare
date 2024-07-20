@@ -1,6 +1,7 @@
 package com.studcare.model;
 
 import com.studcare.data.jpa.dto.StudentDTO;
+import com.studcare.data.jpa.dto.SubjectDTO;
 import com.studcare.data.jpa.dto.SubjectTeacherDTO;
 import lombok.Data;
 

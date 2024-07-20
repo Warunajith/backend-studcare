@@ -10,5 +10,4 @@ public class ClassRequestDTO {
 	private Map<String,String> headers;
 	private Map<String,String> queryParams;
 	private SchoolClassDTO schoolClassDTO;
-	private String classTeacherEmail;
 }

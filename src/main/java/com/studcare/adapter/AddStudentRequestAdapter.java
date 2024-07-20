@@ -20,7 +20,8 @@ public class AddStudentRequestAdapter implements GenericRequestAdapter<HttpReque
 		AddStudentsRequestDTO addStudentsRequestDTO = new AddStudentsRequestDTO();
 		addStudentsRequestDTO.setHeaders(httpRequestData.getHeaders());
 		addStudentsRequestDTO.setQueryParams(httpRequestData.getQueryParams());
-		addStudentsRequestDTO.setAddStudentsDTO(mapStudentEmails(httpRequestData.getRequestBody()));
+		addStudentsRequestDTO.setClassName(httpRequestData.getReference());
+		addStudentsRequestDTO.setStudents(mapStudentEmails(httpRequestData.getRequestBody()));
 		return addStudentsRequestDTO;
 	}
 

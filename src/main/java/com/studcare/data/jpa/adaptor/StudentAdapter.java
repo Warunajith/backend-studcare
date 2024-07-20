@@ -11,6 +11,7 @@ import com.studcare.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 @Component
 public class StudentAdapter {
@@ -24,23 +25,44 @@ public class StudentAdapter {
 
 	public Student adapt(StudentDTO studentDTO) {
 		Student student = new Student();
+		if (!ObjectUtils.isEmpty(studentDTO.getStudentId())) {
+			student.setStudentId(studentDTO.getStudentId());
+		}
 		User user = userAdapter.adapt(studentDTO.getUserDTO());
 		student.setUser(user);
-		SchoolClass schoolClass = schoolClassAdapter.adapt(studentDTO.getSchoolClassDTO());
-		student.setSchoolClass(schoolClass);
-		Ward ward = wardAdapter.adapt(studentDTO.getWardDTO());
-		student.setWard(ward);
+		if (!ObjectUtils.isEmpty(studentDTO.getSchoolClassDTO())) {
+			SchoolClass schoolClass = schoolClassAdapter.adapt(studentDTO.getSchoolClassDTO());
+			student.setSchoolClass(schoolClass);
+		} else {
+			student.setSchoolClass(null);
+		}
+		if (!ObjectUtils.isEmpty(studentDTO.getWardDTO())) {
+			Ward ward = wardAdapter.adapt(studentDTO.getWardDTO());
+			student.setWard(ward);
+		} else {
+			student.setWard(null);
+		}
+
 		return student;
 	}
 
 	public StudentDTO adapt(Student student) {
 		StudentDTO studentDTO = new StudentDTO();
+		if (!ObjectUtils.isEmpty(studentDTO.getStudentId())) {
+			studentDTO.setStudentId(student.getStudentId());
+		}
+		studentDTO.setStudentId(student.getStudentId());
 		UserDTO userDTO = userAdapter.adapt(student.getUser());
 		studentDTO.setUserDTO(userDTO);
-		SchoolClassDTO schoolClassDTO = schoolClassAdapter.adapt(student.getSchoolClass());
-		studentDTO.setSchoolClassDTO(schoolClassDTO);
-		WardDTO wardDTO = wardAdapter.adapt(student.getWard());
-		studentDTO.setWardDTO(wardDTO);
+		if (!ObjectUtils.isEmpty(student.getSchoolClass())) {
+			SchoolClassDTO schoolClassDTO = schoolClassAdapter.adapt(student.getSchoolClass());
+			studentDTO.setSchoolClassDTO(schoolClassDTO);
+		}
+		if (!ObjectUtils.isEmpty(student.getWard())) {
+			WardDTO wardDTO = wardAdapter.adapt(student.getWard());
+			studentDTO.setWardDTO(wardDTO);
+		}
+
 		return studentDTO;
 	}
 }

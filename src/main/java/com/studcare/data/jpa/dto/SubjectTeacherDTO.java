@@ -7,9 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class SubjectTeacherDTO {
-
-	private Long subjectId;
-	private Long teacherId;
 	private String teacherMail;
 	private SubjectDTO subject;
 	private UserDTO teacher;

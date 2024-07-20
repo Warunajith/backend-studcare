@@ -3,15 +3,14 @@ package com.studcare.service;
 import com.studcare.data.jpa.adaptor.MonthlyEvaluationAdapter;
 import com.studcare.adapter.ResponseAdapter;
 import com.studcare.constants.Status;
-import com.studcare.data.jpa.adaptor.HostelMasterAdapter;
 import com.studcare.data.jpa.adaptor.StudentAdapter;
+import com.studcare.data.jpa.adaptor.UserAdapter;
 import com.studcare.data.jpa.adaptor.WardAdapter;
 import com.studcare.data.jpa.dto.HostelMasterDTO;
-import com.studcare.data.jpa.entity.HostelMaster;
 import com.studcare.data.jpa.entity.MonthlyEvaluation;
 import com.studcare.data.jpa.entity.Student;
+import com.studcare.data.jpa.entity.User;
 import com.studcare.data.jpa.entity.Ward;
-import com.studcare.data.jpa.repository.HostelMasterRepository;
 import com.studcare.data.jpa.repository.MonthlyEvaluationRepository;
 import com.studcare.data.jpa.repository.StudentRepository;
 import com.studcare.data.jpa.repository.UserRepository;
@@ -36,9 +35,6 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 @Slf4j
 @Service
 public class HostelMasterService {
-
-	@Autowired
-	private HostelMasterRepository hostelMasterRepository;
 	@Autowired
 	private WardRepository wardRepository;
 	@Autowired
@@ -54,17 +50,17 @@ public class HostelMasterService {
 	@Autowired
 	private StudentAdapter studentAdapter;
 	@Autowired
-	private HostelMasterAdapter hostelMasterAdapter;
+	private UserAdapter userAdapter;
 	@Autowired
 	private MonthlyEvaluationAdapter monthlyEvaluationAdapter;
 
-	public ResponseEntity<Object> getWardDetails(Long hostelMasterId) {
-		log.info("HostelMasterService.getWardDetails() initiated for hostel master ID: {}", hostelMasterId);
+	public ResponseEntity<Object> getWardDetails(String hostelMasterEmail) {
+		log.info("HostelMasterService.getWardDetails() initiated for hostel master ID: {}", hostelMasterEmail);
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 
 		try {
-			HostelMaster hostelMaster = hostelMasterRepository.findById(hostelMasterId)
+			User hostelMaster = userRepository.findByEmail(hostelMasterEmail)
 					.orElseThrow(() -> new StudCareValidationException("Hostel Master not found"));
 
 			Ward ward = wardRepository.findByHostelMaster(hostelMaster)
@@ -86,53 +82,28 @@ public class HostelMasterService {
 		} catch (StudCareValidationException exception) {
 			log.error("HostelMasterService.getWardDetails() validation error", exception);
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (Exception exception) {
 			log.error("HostelMasterService.getWardDetails() an error occurred", exception);
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		}
 
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> getAllHostelMasters() {
-		log.info("HostelMasterService.getAllHostelMasters() initiated");
+	public ResponseEntity<Object> addMonthlyEvaluation(String hostelMasterEmail, String studentId, MonthlyEvaluationRequestDTO evaluationRequestDTO) {
+		log.info("HostelMasterService.addMonthlyEvaluation() initiated for hostel master ID: {} and student ID: {}", hostelMasterEmail, studentId);
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 
 		try {
-			List<HostelMaster> hostelMasters = hostelMasterRepository.findAll();
-			List<HostelMasterDTO> hostelMasterDTOs = hostelMasters.stream()
-					.map(hostelMasterAdapter::adapt)
-					.collect(Collectors.toList());
-
-			ResponseDTO responseDTO = new ResponseDTO();
-			responseDTO.setResponseCode(Status.SUCCESS);
-			responseDTO.setMessage("All Hostel Masters retrieved successfully");
-			responseDTO.setData(hostelMasterDTOs);
-
-			httpResponseData = responseAdapter.adapt(responseDTO);
-			responseEntity = createResponseEntity(httpResponseData);
-		} catch (Exception exception) {
-			log.error("HostelMasterService.getAllHostelMasters() an error occurred", exception);
-			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-			responseEntity = createResponseEntity(httpResponseData);
-		}
-
-		return responseEntity;
-	}
-
-	public ResponseEntity<Object> addMonthlyEvaluation(Long hostelMasterId, Long studentId, MonthlyEvaluationRequestDTO evaluationRequestDTO) {
-		log.info("HostelMasterService.addMonthlyEvaluation() initiated for hostel master ID: {} and student ID: {}", hostelMasterId, studentId);
-		ResponseEntity<Object> responseEntity;
-		HttpResponseData httpResponseData = new HttpResponseData();
-
-		try {
-			HostelMaster hostelMaster = hostelMasterRepository.findById(hostelMasterId)
+			User hostelMaster = userRepository.findByEmail(hostelMasterEmail)
 					.orElseThrow(() -> new StudCareValidationException("Hostel Master not found"));
 
-			Student student = studentRepository.findById(studentId)
+			Student student = studentRepository.findByUser_Email(studentId)
 					.orElseThrow(() -> new StudCareValidationException("Student not found"));
 
 			MonthlyEvaluation monthlyEvaluation = monthlyEvaluationAdapter.adapt(evaluationRequestDTO);
@@ -150,10 +121,12 @@ public class HostelMasterService {
 		} catch (StudCareValidationException exception) {
 			log.error("HostelMasterService.addMonthlyEvaluation() validation error", exception);
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (Exception exception) {
 			log.error("HostelMasterService.addMonthlyEvaluation() an error occurred", exception);
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		}
 

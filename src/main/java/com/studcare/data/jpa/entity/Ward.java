@@ -29,11 +29,8 @@ public class Ward {
 	private String wardName;
 
 	@ManyToOne
-	@JoinColumn(name = "HostelMasterID", referencedColumnName = "HostelMasterID")
-	private HostelMaster hostelMaster;
-
-	@OneToMany(mappedBy = "ward")
-	private List<Student> students;
+	@JoinColumn(name = "HostelMasterID")
+	private User hostelMaster;
 
 	@CreationTimestamp
 	private LocalDateTime createdTimestamp;

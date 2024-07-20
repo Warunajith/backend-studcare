@@ -30,7 +30,7 @@ public class AccountController {
 			@RequestBody String requestBody
 	) {
 		try {
-			log.info("AccountController.createUser()[POST] process initiated");
+			log.info("AccountController.adaptCreateUser()[POST] process initiated");
 			HttpRequestData httpRequestData = new HttpRequestData(headers, queryParams, requestBody);
 			return accountService.createUser(httpRequestData);
 		} catch (Exception exception) {

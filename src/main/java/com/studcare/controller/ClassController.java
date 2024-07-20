@@ -41,12 +41,13 @@ public class ClassController {
 
 	@PostMapping("/{className}/add/students")
 	public ResponseEntity<Object> addStudents(
+			@PathVariable String className,
 			@RequestHeader Map<String, String> headers,
 			@RequestParam Map<String, String> queryParams,
 			@RequestBody String requestBody) {
 		try {
 			log.info("ClassController.addStudents()[POST] process initiated");
-			HttpRequestData httpRequestData = new HttpRequestData(headers, queryParams, requestBody);
+			HttpRequestData httpRequestData = new HttpRequestData(className, headers, queryParams, requestBody);
 			return classService.addStudents(httpRequestData);
 		} catch (Exception exception) {
 			log.error("ClassController.addStudents()[POST] unexpected error occurred", exception);
@@ -70,21 +71,35 @@ public class ClassController {
 		}
 	}
 
-	@GetMapping("/{classId}/students")
-	public ResponseEntity<Object> getStudentsInClass(@PathVariable Long classId) {
+	@PostMapping("/{className}/{subject}/assign/{teacher}")
+	public ResponseEntity<Object> addTeacherToClassSubject(
+			@PathVariable String teacher,
+			@PathVariable String subject,
+			@PathVariable String className) {
+		try {
+			log.info("ClassController.getClassesForTeacherAndSubject()[GET] process initiated for teacher ID: {} and subject ID: {}", teacher, subject);
+			return classService.addTeacherToClassSubject(teacher, subject, className);
+		} catch (Exception exception) {
+			log.error("ClassController.getClassesForTeacherAndSubject()[GET] unexpected error occurred", exception);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/{className}/students")
+	public ResponseEntity<Object> getStudentsInClass(@PathVariable String className) {
 		try {
 			log.info("ClassController.getStudentsInClass()[GET] process initiated");
-			return classService.getStudentsInClass(classId);
+			return classService.getStudentsInClass(className);
 		} catch (Exception exception) {
 			log.error("ClassController.getStudentsInClass()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/teacher/{teacherId}/subject/{subjectId}")
+	@GetMapping("/{teacherId}/{subjectId}")
 	public ResponseEntity<Object> getClassesForTeacherAndSubject(
-			@PathVariable Long teacherId,
-			@PathVariable Long subjectId) {
+			@PathVariable String teacherId,
+			@PathVariable String subjectId) {
 		try {
 			log.info("ClassController.getClassesForTeacherAndSubject()[GET] process initiated for teacher ID: {} and subject ID: {}", teacherId, subjectId);
 			return classService.getClassesForTeacherAndSubject(teacherId, subjectId);
@@ -94,24 +109,24 @@ public class ClassController {
 		}
 	}
 
-	@GetMapping("/{classId}/details")
-	public ResponseEntity<Object> getClassDetails(@PathVariable Long classId) {
+	@GetMapping("/{className}/details")
+	public ResponseEntity<Object> getClassDetails(@PathVariable String className) {
 		try {
-			log.info("ClassController.getClassDetails()[GET] process initiated for class ID: {}", classId);
-			return classService.getClassDetails(classId);
+			log.info("ClassController.getClassDetails()[GET] process initiated for class name: {}", className);
+			return classService.getClassDetails(className);
 		} catch (Exception exception) {
 			log.error("ClassController.getClassDetails()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	@GetMapping("/{classId}/results")
+	@GetMapping("/{className}/results")
 	public ResponseEntity<Object> getClassResults(
-			@PathVariable Long classId,
+			@PathVariable String className,
 			@RequestParam Integer academicYear,
 			@RequestParam Integer termNumber) {
 		try {
-			log.info("ClassController.getClassResults()[GET] process initiated for class ID: {}", classId);
-			return classService.getClassResults(classId, academicYear, termNumber);
+			log.info("ClassController.getClassResults()[GET] process initiated for class name: {}", className);
+			return classService.getClassResults(className, academicYear, termNumber);
 		} catch (Exception exception) {
 			log.error("ClassController.getClassResults()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

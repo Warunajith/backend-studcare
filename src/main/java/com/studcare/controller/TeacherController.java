@@ -20,34 +20,34 @@ public class TeacherController {
 
 	@Autowired
 	private TeacherService teacherService;
-	@GetMapping("/{teacherId}/subjects")
-	public ResponseEntity<Object> getTeacherSubjectsAndClasses(@PathVariable Long teacherId) {
+	@GetMapping("/{teacher}/subjects")
+	public ResponseEntity<Object> getTeacherSubjectsAndClasses(@PathVariable String teacher) {
 		try {
-			log.info("ClassController.getTeacherSubjectsAndClasses()[GET] process initiated for teacher ID: {}", teacherId);
-			return teacherService.getTeacherSubjectsAndClasses(teacherId);
+			log.info("ClassController.getTeacherSubjectsAndClasses()[GET] process initiated for teacher ID: {}", teacher);
+			return teacherService.getTeacherSubjectsAndClasses(teacher);
 		} catch (Exception exception) {
 			log.error("ClassController.getTeacherSubjectsAndClasses()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/{userId}/class")
-	public ResponseEntity<Object> getClassTeacherDetails(@PathVariable Long userId) {
+	@GetMapping("/{teacher}/class")
+	public ResponseEntity<Object> getClassTeacherDetails(@PathVariable String teacher) {
 		try {
-			log.info("ClassController.getClassTeacherDetails()[GET] process initiated for user ID: {}", userId);
-			return teacherService.getClassTeacherDetails(userId);
+			log.info("ClassController.getClassTeacherDetails()[GET] process initiated for user ID: {}", teacher);
+			return teacherService.getClassTeacherDetails(teacher);
 		} catch (Exception exception) {
 			log.error("ClassController.getClassTeacherDetails()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	@PostMapping("/{teacherId}/subject/results")
+	@PostMapping("/{teacher}/subject/results")
 	public ResponseEntity<Object> addSubjectResults(
-			@PathVariable Long teacherId,
+			@PathVariable String teacher,
 			@RequestBody SubjectResultsRequestDTO resultsRequestDTO) {
 		try {
-			log.info("ClassController.addSubjectResults()[POST] process initiated for teacher ID: {}", teacherId);
-			return teacherService.addSubjectResults(resultsRequestDTO, teacherId);
+			log.info("ClassController.addSubjectResults()[POST] process initiated for teacher ID: {}", teacher);
+			return teacherService.addSubjectResults(resultsRequestDTO, teacher);
 		} catch (Exception exception) {
 			log.error("ClassController.addSubjectResults()[POST] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

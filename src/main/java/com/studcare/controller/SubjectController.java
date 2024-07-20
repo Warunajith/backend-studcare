@@ -65,22 +65,22 @@ public class SubjectController {
 		}
 	}
 
-	@GetMapping("/teacher/{teacherId}")
-	public ResponseEntity<Object> getSubjectsForTeacher(@PathVariable Long teacherId) {
+	@GetMapping("/teacher/{teacher}")
+	public ResponseEntity<Object> getSubjectsForTeacher(@PathVariable String teacher) {
 		try {
 			log.info("SubjectController.getSubjectsForTeacher()[GET] process initiated");
-			return subjectService.getSubjectsForTeacher(teacherId);
+			return subjectService.getSubjectsForTeacher(teacher);
 		} catch (Exception exception) {
 			log.error("SubjectController.getSubjectsForTeacher()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@GetMapping("/{subjectId}/teachers")
-	public ResponseEntity<Object> getTeachersForSubject(@PathVariable Long subjectId) {
+	@GetMapping("/{subject}/teachers")
+	public ResponseEntity<Object> getTeachersForSubject(@PathVariable String subject) {
 		try {
 			log.info("SubjectController.getTeachersForSubject()[GET] process initiated");
-			return subjectService.getTeachersForSubject(subjectId);
+			return subjectService.getTeachersForSubject(subject);
 		} catch (Exception exception) {
 			log.error("SubjectController.getTeachersForSubject()[GET] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
