@@ -4,6 +4,7 @@ import com.studcare.adapter.AddStudentRequestAdapter;
 import com.studcare.adapter.AddSubjectsToClassRequestAdapter;
 import com.studcare.adapter.ClassRequestAdapter;
 import com.studcare.adapter.ResponseAdapter;
+import com.studcare.adapter.YearTermResultRequestAdapter;
 import com.studcare.constants.Status;
 import com.studcare.data.jpa.adaptor.SchoolClassAdapter;
 import com.studcare.data.jpa.adaptor.StudentAdapter;
@@ -46,6 +47,7 @@ import com.studcare.model.ResponseDTO;
 import com.studcare.model.StudentResultsDTO;
 import com.studcare.model.SubjectResultDTO;
 import com.studcare.model.UserDTO;
+import com.studcare.model.YearTermDTO;
 import com.studcare.validator.ClassValidator;
 import jakarta.transaction.Transactional;
 import jdk.jfr.Label;
@@ -84,6 +86,7 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 	@Autowired private ClassSubjectAssignmentRepository classSubjectAssignmentRepository;
 	@Autowired private StudentSubjectEnrollmentRepository studentSubjectEnrollmentRepository;
 	@Autowired private UserAdapter userAdapter;
+	@Autowired private YearTermResultRequestAdapter yearTermResultRequestAdapter;
 
 	@Autowired private ResponseAdapter responseAdapter;
 	@Autowired private WardAdapter wardAdapter;
@@ -394,8 +397,9 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		return responseEntity;
 	}
 
-	public ResponseEntity<Object> getClassResults(String className, Integer academicYear, Integer termNumber) {
-		log.info("ClassService.getClassResults() initiated for class ID: {}, academic year: {}, term: {}", className, academicYear, termNumber);
+	public ResponseEntity<Object> getClassResults(String className,  String requestBody) {
+		YearTermDTO yearTermDTO = yearTermResultRequestAdapter.adapt(requestBody);
+		log.info("ClassService.getClassResults() initiated for class ID: {}, academic year: {}, term: {}", className, yearTermDTO.getAcademicYear(), yearTermDTO.getTerm());
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
 		try {
@@ -409,7 +413,7 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 				StudentResultsDTO studentResultsDTO = new StudentResultsDTO();
 				studentResultsDTO.setStudentId(student.getStudentId());
 				studentResultsDTO.setStudentName(student.getUser().getUsername());
-				TermResult termResult = termResultRepository.findByStudentAndAcademicYearAndTermNumber(student, academicYear, termNumber).orElse(null);
+				TermResult termResult = termResultRepository.findByStudentAndAcademicYearAndTermNumber(student, yearTermDTO.getAcademicYear(), yearTermDTO.getTerm()).orElse(null);
 				List<SubjectResultDTO> subjectResultDTOs = new ArrayList<>();
 				if (termResult != null) {
 					List<SubjectResult> subjectResults = subjectResultRepository.findByTermResult(termResult);

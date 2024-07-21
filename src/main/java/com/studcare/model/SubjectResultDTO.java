@@ -6,7 +6,7 @@ import lombok.Data;
 public class SubjectResultDTO {
 	private Long subjectId;
 	private String subjectName;
-	private Integer marks;
+	private String marks;
 	private String grade;
 	private String teacherNote;
 }

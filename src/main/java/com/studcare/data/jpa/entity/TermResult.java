@@ -31,13 +31,13 @@ public class TermResult {
 	private Student student;
 
 	@Column(name = "TermNumber")
-	private Integer termNumber;
+	private String termNumber;
 
 	@Column(name = "AcademicYear")
-	private Integer academicYear;
+	private String academicYear;
 
 	@Column(name = "ClassRank")
-	private Integer classRank;
+	private String classRank;
 
 	@Column(name = "ClassTeacherNote")
 	private String classTeacherNote;

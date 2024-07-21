@@ -30,10 +30,10 @@ public class MonthlyEvaluation {
 	private Student student;
 
 	@Column(name = "EvaluationMonth")
-	private Integer evaluationMonth;
+	private String evaluationMonth;
 
 	@Column(name = "EvaluationYear")
-	private Integer evaluationYear;
+	private String evaluationYear;
 
 
 	@Column(name = "BehavioralData")

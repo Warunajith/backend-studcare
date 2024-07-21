@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class MonthlyEvaluationRequestDTO {
-	private Integer evaluationMonth;
-	private Integer evaluationYear;
+	private String evaluationMonth;
+	private String evaluationYear;
 	private String behavioralData;
 	private String extraNote;
 	private String extracurricularActivities;

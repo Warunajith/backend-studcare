@@ -6,10 +6,9 @@ import java.util.List;
 
 @Data
 public class SubjectResultsRequestDTO {
-	private Long subjectId;
-	private Integer academicYear;
-	private Integer termNumber;
-	private String teacherNote;
+	private String subjectName;
+	private String academicYear;
+	private String termNumber;
 	private List<StudentResultDTO> studentResults;
 }
 

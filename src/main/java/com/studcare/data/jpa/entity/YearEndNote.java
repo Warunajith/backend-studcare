@@ -29,7 +29,7 @@ public class YearEndNote {
 	private User student;
 
 	@Column(name = "AcademicYear")
-	private Integer academicYear;
+	private String academicYear;
 
 	@Column(name = "TeacherNote")
 	private String teacherNote;

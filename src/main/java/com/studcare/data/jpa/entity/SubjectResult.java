@@ -32,7 +32,7 @@ public class SubjectResult {
 	private Subject subject;
 
 	@Column(name = "Marks")
-	private Integer marks;
+	private String marks;
 
 	@Column(name = "Grade")
 	private String grade;

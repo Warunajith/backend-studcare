@@ -41,7 +41,7 @@ public class TeacherController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	@PostMapping("/{teacher}/subject/results")
+	@PostMapping("/{teacher}/subject/result")
 	public ResponseEntity<Object> addSubjectResults(
 			@PathVariable String teacher,
 			@RequestBody SubjectResultsRequestDTO resultsRequestDTO) {

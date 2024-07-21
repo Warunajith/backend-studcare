@@ -89,10 +89,12 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		} catch (StudCareValidationException exception) {
 			log.error("ClassService.getTeacherSubjectsAndClasses() validation error", exception);
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (Exception exception) {
 			log.error("ClassService.getTeacherSubjectsAndClasses() an error occurred", exception);
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		}
 
@@ -121,10 +123,12 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		} catch (StudCareValidationException exception) {
 			log.error("ClassService.getClassTeacherDetails() validation error", exception);
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (Exception exception) {
 			log.error("ClassService.getClassTeacherDetails() an error occurred", exception);
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		}
 
@@ -132,26 +136,19 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 	}
 
 	public ResponseEntity<Object> addSubjectResults(SubjectResultsRequestDTO resultsRequestDTO, String teacherEmail) {
-		log.info("ClassService.addSubjectResults() initiated for subject ID: {}", resultsRequestDTO.getSubjectId());
+		log.info("ClassService.addSubjectResults() initiated for subject ID: {}", resultsRequestDTO.getSubjectName());
 		ResponseEntity<Object> responseEntity;
 		HttpResponseData httpResponseData = new HttpResponseData();
-
 		try {
 			User teacher = userRepository.findByEmail(teacherEmail).orElseThrow(() -> new StudCareValidationException("Teacher not found"));
-
-			Subject subject = subjectRepository.findById(resultsRequestDTO.getSubjectId())
-					.orElseThrow(() -> new StudCareValidationException("Subject not found"));
-
-			// Verify that the teacher is assigned to teach this subject
+			Subject subject = subjectRepository.findBySubjectName(resultsRequestDTO.getSubjectName()).orElseThrow(() -> new StudCareValidationException("Subject not found"));
 			if (!classSubjectAssignmentRepository.existsByTeacherAndSubject(teacher, subject)) {
 				throw new StudCareValidationException("Teacher is not assigned to this subject");
 			}
-
 			for (StudentResultDTO studentResult : resultsRequestDTO.getStudentResults()) {
-				Student student = studentRepository.findById(studentResult.getStudentId())
+				Student student = studentRepository.findByUser_Email(studentResult.getStudentEmail())
 						.orElseThrow(() -> new StudCareValidationException("Student not found"));
 
-				// Get or create TermResult
 				TermResult termResult = termResultRepository.findByStudentAndAcademicYearAndTermNumber(student, resultsRequestDTO.getAcademicYear(),
 						resultsRequestDTO.getTermNumber()).orElseGet(() -> {
 					TermResult newTermResult = new TermResult();
@@ -171,7 +168,7 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 
 				subjectResult.setMarks(studentResult.getMarks());
 				subjectResult.setGrade(studentResult.getGrade());
-				subjectResult.setTeacherNote(resultsRequestDTO.getTeacherNote());
+				subjectResult.setTeacherNote(studentResult.getTeacherNote());
 
 				subjectResultRepository.save(subjectResult);
 			}
@@ -183,10 +180,12 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		} catch (StudCareValidationException exception) {
 			log.error("ClassService.addSubjectResults() validation error", exception);
 			httpResponseData.setHttpStatus(HttpStatus.BAD_REQUEST);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		} catch (Exception exception) {
 			log.error("ClassService.addSubjectResults() an error occurred", exception);
 			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
 			responseEntity = createResponseEntity(httpResponseData);
 		}
 
