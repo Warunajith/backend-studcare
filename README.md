@@ -26,3 +26,5 @@ DB hosted in Azure
 
 3. Run Docker Container : `docker run -p 8080:8080 stud-care-backend-service:latest`
 
+Or can be pulled from docker hub : `docker pull pwick/stud-care` and run the image
+

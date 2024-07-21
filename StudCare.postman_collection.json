@@ -1,0 +1,831 @@
+{
+	"info": {
+		"_postman_id": "1cbea8db-e99d-4dc2-a10c-5b826d3adaba",
+		"name": "StudCare",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23833477"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"example@example.com\",\n  \"password\": \"example123\",\n  \"role\": \"STUDENT\",\n  \"username\": \"example@example.com\",\n  \"isClassTeacher\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/user/profile/student5@gmail.com",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"profile",
+						"student5@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"example@example.com\",\n  \"password\": \"example123\",\n  \"role\": \"STUDENT\",\n  \"username\": \"example@example.com\",\n  \"isClassTeacher\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"example@example.com\",\n  \"password\": \"example123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"example@example.com\",\n  \"password\": \"example123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create class",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"className\": \"12D\",\n  \"classTeacher\": {\n    \"email\": \"cteacher12@gmail.com\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"className\": \"12D\",\n  \"classTeacher\": {\n    \"email\": \"cteacher12@gmail.com\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addSubjectsToClass",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n    \"subjects\": [\n      \"maths\",\n      \"science\"\n    ]\n  \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/8D/add/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"add",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addTeacherToClassSubject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n    \"subjects\": [\n      \"maths\",\n      \"science\"\n    ]\n  \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/8D/add/subjects",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"add",
+						"subjects"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create subject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"className\": \"12D\",\n  \"classTeacher\": {\n    \"email\": \"cteacher12@gmail.com\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign Teacher to Subject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"className\": \"12D\",\n  \"classTeacher\": {\n    \"email\": \"cteacher12@gmail.com\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "all subjects",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subject/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subject",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubjectsForTeacher",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subject/teacher/cteacher11@gmail.com",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subject",
+						"teacher",
+						"cteacher11@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTeachersForSubject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subject/maths/teachers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subject",
+						"maths",
+						"teachers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTeacherSubjectsAndClasses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/subject/maths/teachers",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subject",
+						"maths",
+						"teachers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add students to class",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n    \"studentEmails\": [\n      \"student6@example.com\",\n      \"student7@example.com\"\n    ]\n  \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/class/8D/add/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"add",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add students to ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \n    \"studentEmails\": [\n      \"student6@example.com\",\n      \"student7@example.com\"\n    ]\n  \n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/ward/AA/add/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ward",
+						"AA",
+						"add",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all students in ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all students in class",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all students in class Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getClassesForTeacherAndSubject",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDg0OTg3LCJleHAiOjE3MjE1NzEzODd9.64aZ_7WuTCTjGdov9HxPbhC_4z9JKvKXqAc0Mffa9rY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/students",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get class",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/details",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/details",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get ward by hostel master",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/class/8D/details",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"class",
+						"8D",
+						"details"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQGV4YW1wbGUuY29tIiwiaWF0IjoxNzIxNDY4OTUzLCJleHAiOjE3MjE1NTUzNTN9.3hHMLrvTqjovY2aVfl8QWJkE5CMCAjeGPUW9VIoAHgc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userRole\": \"TEACHER\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"all"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
