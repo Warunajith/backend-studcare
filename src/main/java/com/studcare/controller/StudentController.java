@@ -1,5 +1,6 @@
 package com.studcare.controller;
 
+import com.studcare.model.MonthlyEvaluationsDTO;
 import com.studcare.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,19 @@ public class StudentController {
 			return studentService.getStudentAllResults(student);
 		} catch (Exception exception) {
 			log.error("StudentService.getAllResults()[GET] unexpected error occurred", exception);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/{studentId}/evaluations")
+	public ResponseEntity<Object> getMonthlyEvaluations(
+			@PathVariable String studentId,
+			@RequestBody MonthlyEvaluationsDTO requestDTO) {
+		try {
+			log.info("StudentService.getMonthlyEvaluations()[POST] process initiated for student ID: {}", studentId);
+			return studentService.getMonthlyEvaluations( studentId, requestDTO);
+		} catch (Exception exception) {
+			log.error("StudentService.getMonthlyEvaluations()[POST] unexpected error occurred", exception);
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

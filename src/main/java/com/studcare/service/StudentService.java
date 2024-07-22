@@ -1,24 +1,35 @@
 package com.studcare.service;
 
+import com.studcare.adapter.MonthlyEvaluationResponseAdapter;
 import com.studcare.adapter.ResponseAdapter;
 import com.studcare.adapter.YearTermResultRequestAdapter;
 import com.studcare.constants.Status;
+import com.studcare.data.jpa.adaptor.MonthlyEvaluationAdapter;
+import com.studcare.data.jpa.adaptor.StudentAdapter;
+import com.studcare.data.jpa.adaptor.UserAdapter;
+import com.studcare.data.jpa.entity.MonthlyEvaluation;
 import com.studcare.data.jpa.entity.SchoolClass;
 import com.studcare.data.jpa.entity.Student;
 import com.studcare.data.jpa.entity.SubjectResult;
 import com.studcare.data.jpa.entity.TermResult;
+import com.studcare.data.jpa.entity.User;
+import com.studcare.data.jpa.repository.MonthlyEvaluationRepository;
 import com.studcare.data.jpa.repository.SchoolClassRepository;
 import com.studcare.data.jpa.repository.StudentRepository;
 import com.studcare.data.jpa.repository.SubjectResultRepository;
 import com.studcare.data.jpa.repository.TermResultRepository;
+import com.studcare.data.jpa.repository.UserRepository;
 import com.studcare.exception.StudCareDataException;
 import com.studcare.exception.StudCareValidationException;
 import com.studcare.model.ClassResultsDTO;
 import com.studcare.model.HttpResponseData;
+import com.studcare.model.MonthlyEvaluationResponseDTO;
+import com.studcare.model.MonthlyEvaluationsDTO;
 import com.studcare.model.ResponseDTO;
 import com.studcare.model.StudentResultsDTO;
 import com.studcare.model.SubjectResultDTO;
 import com.studcare.model.TermResultsDTO;
+import com.studcare.model.UserDTO;
 import com.studcare.model.YearResultsDTO;
 import com.studcare.model.YearTermDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +57,16 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 
 	@Autowired private SubjectResultRepository subjectResultRepository;
 
+	@Autowired
+	private UserAdapter userAdapter;
+	@Autowired
+	private StudentAdapter studentAdapter;
+	@Autowired
+	private MonthlyEvaluationResponseAdapter monthlyEvaluationResponseAdapter;
+	@Autowired
+	private MonthlyEvaluationRepository monthlyEvaluationRepository;
+	@Autowired
+	private UserRepository userRepository;
 	public ResponseEntity<Object> getStudentResults(String studentEmail, String requestBody) {
 		YearTermDTO yearTermDTO = yearTermResultRequestAdapter.adapt(requestBody);
 		log.info("StudentService.getStudentResults() initiated for student ID: {}, academic year: {}, term: {}", studentEmail, yearTermDTO.getAcademicYear(), yearTermDTO.getTerm());
@@ -228,4 +249,38 @@ import static com.studcare.util.CommonUtils.createResponseEntity;
 		return responseEntity;
 	}
 
+
+	public ResponseEntity<Object> getMonthlyEvaluations(String studentId, MonthlyEvaluationsDTO requestDTO) {
+		log.info("StudentService.getMonthlyEvaluations() initiated for student ID: {}", studentId);
+		ResponseEntity<Object> responseEntity;
+		HttpResponseData httpResponseData = new HttpResponseData();
+		try {
+
+			Student student = studentRepository.findByUser_Email(studentId)
+					.orElseThrow(() -> new StudCareDataException("Student not found"));
+			User hostelMaster = studentRepository.findHostelMasterByStudentId(student.getStudentId())
+					.orElseThrow(() -> new StudCareDataException("Hostel Master not found"));
+			List<MonthlyEvaluation> evaluations = monthlyEvaluationRepository.findByStudentAndEvaluationMonthIn(student, requestDTO.getMonths());
+			UserDTO hostelMasterDTO = userAdapter.adapt(hostelMaster);
+			MonthlyEvaluationResponseDTO monthlyEvaluationResponseDTO = monthlyEvaluationResponseAdapter.adapt(evaluations, hostelMasterDTO);
+			ResponseDTO responseDTO = new ResponseDTO();
+			responseDTO.setResponseCode(Status.SUCCESS);
+			responseDTO.setMessage("Evaluation details retrieved successfully");
+			responseDTO.setData(Collections.singletonList(monthlyEvaluationResponseDTO));
+
+			httpResponseData = responseAdapter.adapt(responseDTO);
+			responseEntity = createResponseEntity(httpResponseData);
+		} catch (StudCareDataException exception) {
+			log.error("StudentService.getMonthlyEvaluations() data error", exception);
+			httpResponseData.setHttpStatus(HttpStatus.NOT_FOUND);
+			httpResponseData.setResponseBody(exception.getMessage());
+			responseEntity = createResponseEntity(httpResponseData);
+		} catch (Exception exception) {
+			log.error("StudentService.getMonthlyEvaluations() an error occurred", exception);
+			httpResponseData.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+			httpResponseData.setResponseBody(exception.getMessage());
+			responseEntity = createResponseEntity(httpResponseData);
+		}
+		return responseEntity;
+	}
 }

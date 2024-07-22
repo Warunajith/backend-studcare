@@ -1,6 +1,7 @@
 package com.studcare.controller;
 
 import com.studcare.model.MonthlyEvaluationRequestDTO;
+import com.studcare.model.MonthlyEvaluationsDTO;
 import com.studcare.service.HostelMasterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,4 +41,6 @@ public class HostelMasterController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
 }
